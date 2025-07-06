@@ -10,3 +10,13 @@ In the professional world, people found that is kind of unnecessary to fun a ful
 Docker is a technology that eliminates this redundancy by running softwares in containers that has its own software environment but shares the operating system and physical resources of the host machine (such as CPU, memory, and disk), so, kinda like a VM, but not.
 
 It was asked to make this project in a VM, preferably, in the latest version of Alpine or Debian because they are relatively small, secure and stable distros.
+
+## Implementation
+
+We were assigned to write our own Dockerfiles, as well build our Docker images, since is forbidden to pull ready-made DOcker images.
+
+The first image is for NGINX with TLSv1.2 TLSv1.3
+
+### NGINX
+
+NGINX basically is a server side service that answers web requisitions made by our [web browsers](https://en.wikipedia.org/wiki/Web_browser), balancing traffic that goes through the server, managing [cached](https://en.wikipedia.org/wiki/Cache_(computing)) data
