@@ -1,0 +1,13 @@
+mariadb:
+	build: ./requirements/mariadb/
+	container_name: mariadb
+	image: mariadb
+	restart: unless-stopped
+	env_file: .env
+	volumes:
+		- mariadb_data:/var/lib/mysql
+	networks:
+		- inception
+	secrets:
+		- db_password
+		- db_root_password
