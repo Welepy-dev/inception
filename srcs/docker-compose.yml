@@ -20,7 +20,7 @@ volumes:
         driver_opts:
             type: none
             o: bind
-            device: /home/marcio/data/mariadb/
+            device: /home/${USER}/data/mariadb/
 
 networks:
     inception:
