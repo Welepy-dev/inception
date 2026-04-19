@@ -9,8 +9,8 @@ COPY conf/50-server.cnf /etc/mysql/conf.d/
 
 COPY tools/run.sh /usr/local/bin/
 
-CMD["chmod", "+x", "/usr/local/bin/run.sh"]
+RUN chmod +x /usr/local/bin/run.sh
 
-ENTRYPOINT["/usr/local/bin/run.sh"]
+ENTRYPOINT ["/usr/local/bin/run.sh"]
 
 EXPOSE 3306
