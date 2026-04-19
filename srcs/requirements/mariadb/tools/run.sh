@@ -7,8 +7,8 @@ set -e
 
 INITIALIZED=0
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    INITIALIZED=1
-    mariadb-install-db --user=mysql --datadir=/var/lib/mysql >/dev/null
+	INITIALIZED=1
+	mariadb-install-db --user=mysql --datadir=/var/lib/mysql >/dev/null
 fi
 
 chown -R mysql:mysql /var/lib/mysql
@@ -19,20 +19,20 @@ mariadbd --user=mysql --skip-networking --socket=/tmp/mysql.sock &
 PID="$!"
 
 if [ "$INITIALIZED" -eq 1 ]; then
-    PING_CMD=(mariadb-admin --socket=/tmp/mysql.sock -uroot)
+	PING_CMD=(mariadb-admin --socket=/tmp/mysql.sock -uroot)
 else
-    PING_CMD=(mariadb-admin --socket=/tmp/mysql.sock -uroot -p"${DB_ROOT_PASSWORD}")
+	PING_CMD=(mariadb-admin --socket=/tmp/mysql.sock -uroot -p"${DB_ROOT_PASSWORD}")
 fi
 
 for i in $(seq 1 30); do
-    if "${PING_CMD[@]}" ping >/dev/null 2>&1; then
-        break
-    fi
-    sleep 1
+	if "${PING_CMD[@]}" ping >/dev/null 2>&1; then
+		break
+	fi
+	sleep 1
 done
 
 if [ "$INITIALIZED" -eq 1 ]; then
-    mariadb --socket=/tmp/mysql.sock -uroot <<SQL
+	mariadb --socket=/tmp/mysql.sock -uroot <<SQL
 CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
