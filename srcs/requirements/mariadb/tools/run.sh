@@ -1,7 +1,9 @@
 #!/bin/bash
 
-DB_PASSWORD="$(<"/run/secrets/db_password.txt")"
-DB_ROOT_PASSWORD="$(<"/run/secrets/db_root_password.txt")"
+set -e
+
+DB_PASSWORD="$(<"/run/secrets/db_password")"
+DB_ROOT_PASSWORD="$(<"/run/secrets/db_root_password")"
 
 set -e
 
@@ -31,6 +33,8 @@ for i in $(seq 1 30); do
 	sleep 1
 done
 
+echo "INITIALIZED=$INITIALIZED"
+
 if [ "$INITIALIZED" -eq 1 ]; then
 	mariadb --socket=/tmp/mysql.sock -uroot <<SQL
 CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
@@ -40,6 +44,8 @@ GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
 FLUSH PRIVILEGES;
 SQL
 fi
+
+echo "SQL done"
 
 mariadb-admin --socket=/tmp/mysql.sock -uroot -p"${DB_ROOT_PASSWORD}" shutdown
 wait "$PID" || true

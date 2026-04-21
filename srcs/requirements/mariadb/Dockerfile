@@ -11,6 +11,8 @@ COPY tools/run.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/run.sh
 
+RUN rm -rf /var/lib/mysql/*
+
 ENTRYPOINT ["/usr/local/bin/run.sh"]
 
 EXPOSE 3306
