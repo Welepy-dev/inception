@@ -14,6 +14,8 @@ RUN chmod +x /usr/local/bin/run.sh
 
 WORKDIR /var/www/html
 
+RUN chown -R www-data:www-data /var/www/html
+
 EXPOSE 9000
 
 ENTRYPOINT ["/usr/local/bin/run.sh"]

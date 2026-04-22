@@ -18,12 +18,11 @@ if [ ! -f wp-includes/version.php ]; then
     wp core download --allow-root
 
     wp config create \
+        --allow-root \
         --dbname="${MYSQL_DATABASE}" \
-        #--dbport="mariadb" \
         --dbuser="${MYSQL_USER}" \
         --dbpass="${DB_PASSWORD}" \
         --dbhost="${DB_HOST}" \
-        --allow-root
 
     wp core install \
         --url="https://${DOMAIN_NAME}" \
