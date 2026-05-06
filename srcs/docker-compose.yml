@@ -6,7 +6,8 @@ services:
         restart: unless-stopped
         env_file: .env
         depends_on:
-            - mariadb
+            mariadb:
+                condition: service_healthy
         volumes:
             - wordpress_data:/var/www/html
         networks:
@@ -17,6 +18,11 @@ services:
             - wp_admin_password
 
     mariadb:
+        healthcheck:
+            test : ["CMD", "mariadb-admin", "ping", "-h", "localhost", "--skip-password"]
+            interval: 10s
+            timeout: 5s
+            retries: 6
         build: ./requirements/mariadb/
         container_name: mariadb
         image: mariadb
@@ -29,6 +35,13 @@ services:
         secrets:
             - db_password
             - db_root_password
+    nginx:
+        build: ./requirements/nginx/
+        container_name: nginx
+        image: nginx
+        restart: unless-stopped
+        networks:
+            - inception
 
 volumes:
     wordpress_data:
