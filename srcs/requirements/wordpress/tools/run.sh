@@ -5,14 +5,6 @@ DB_PASSWORD="$(<"/run/secrets/db_password")"
 WP_ADMIN_PASSWORD="$(<"/run/secrets/wp_admin_password")"
 WP_EDITOR_PASSWORD="$(<"/run/secrets/wp_editor_password")"
 
-for i in $(seq 1 60); do
-    if mariadb-admin ping -h"${DB_HOST}" -u"${MYSQL_USER}" -p"${DB_PASSWORD}" --silent; then
-		echo "MariaDB server is up!"
-        break
-    fi
-    sleep 1
-done
-
 cd /var/www/html
 
 if [ ! -f wp-includes/version.php ]; then
