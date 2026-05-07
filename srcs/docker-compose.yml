@@ -1,4 +1,25 @@
 services:
+    mariadb:
+        healthcheck:
+            test : ["CMD", "mariadb-admin", "ping", "-h", "localhost", "--skip-password"]
+            interval: 5s
+            timeout: 5s
+            retries: 6
+        build: ./requirements/mariadb/
+        container_name: mariadb
+        image: mariadb
+        restart: unless-stopped
+        env_file: .env
+        volumes:
+            - mariadb_data:/var/lib/mysql
+        networks:
+            - inception
+        secrets:
+            - db_password
+            - db_root_password
+        expose:
+            - "3306"
+
     wordpress:
         build: ./requirements/wordpress/
         image: wordpress
@@ -16,25 +37,14 @@ services:
             - wp_editor_password
             - db_password
             - wp_admin_password
-
-    mariadb:
+        expose:
+            - "9000"
         healthcheck:
-            test : ["CMD", "mariadb-admin", "ping", "-h", "localhost", "--skip-password"]
-            interval: 10s
+            test: ["CMD", "php-fpm8.2", "-t"]
+            interval: 5s
             timeout: 5s
             retries: 6
-        build: ./requirements/mariadb/
-        container_name: mariadb
-        image: mariadb
-        restart: unless-stopped
-        env_file: .env
-        volumes:
-            - mariadb_data:/var/lib/mysql
-        networks:
-            - inception
-        secrets:
-            - db_password
-            - db_root_password
+
     nginx:
         build: ./requirements/nginx/
         container_name: nginx
@@ -42,6 +52,13 @@ services:
         restart: unless-stopped
         networks:
             - inception
+        ports:
+            - "443:443"
+        depends_on:
+            wordpress:
+                condition: service_healthy
+        volumes:
+            - wordpress_data:/var/www/html
 
 volumes:
     wordpress_data:
