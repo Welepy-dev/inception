@@ -1,7 +1,7 @@
 FROM debian:bookworm
 
-RUN apt update && \
-	apt upgrade && \
+RUN apt-get update && \
+	apt-get upgrade -y && \
 	apt-get install -y nginx openssl && \
 	rm -rf /var/lib/apt/lists/*
 

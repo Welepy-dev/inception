@@ -1,9 +1,9 @@
 FROM debian:bookworm
 
-RUN apt update && \
-	apt upgrade && \
-	apt-get install -y mariadb-server mariadb-client gettext-base && \
-	rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y mariadb-server mariadb-client gettext-base && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY tools/run.sh /usr/local/bin/
 COPY conf/init.sql /
